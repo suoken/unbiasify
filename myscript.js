@@ -7,28 +7,7 @@ const TOGGLE_TWITTER_NAMES = 'toggleTwitterNames'
 const TOGGLE_REPLIT_PHOTOS = 'toggleReplitPhotos'
 const TOGGLE_REPLIT_NAMES = 'toggleReplitNames'
 
-var targetNode = $("title")[0]
 
-// Options for the observer (which mutations to observe)
-var config = { attributes: true, childList: true };
-
-// Callback function to execute when mutations are observed
-var callback = function(mutationsList) {
-    for(var mutation of mutationsList) {
-        if (mutation.type == 'childList' && document.title.length) {
-        blankTitle(TOGGLE_LINKED_IN_NAMES,linkedinUpdater,'names');
-        blankTitle(TOGGLE_REPLIT_NAMES,replitUpdater,'names');
-        blankTitle(TOGGLE_ANGELLIST_NAMES,angellistUpdater,'names');
-        blankTitle(TOGGLE_TWITTER_NAMES,twitterUpdater,'names');
-        }
-    }
-};
-
-// Create an observer instance linked to the callback function
-var observer = new MutationObserver(callback);
-
-// Start observing the target node for configured mutations
-observer.observe(targetNode, config);
 
 
 const URLS = {
@@ -265,7 +244,8 @@ function createModel(styleIdentifier, photoIdentifier, nameIdentifier) {
             const id = toggle[type][2];
             const styles = toggle[type][3];
             const nextVal = toggle[type][0];
-            if (nextVal && type == 'names') {
+          
+            if (nextVal && type == 'names' && window.location.href.indexOf(url) > -1) {
                 document.title = "";
             }
             toggleStyles(id, styles, nextVal, url)
@@ -312,15 +292,15 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 
 
 
-function getIntitialVal(property,updaterFunction,type) {
+function getIntitialVal(property, updaterFunction, type) {
     chrome.storage.sync.get(property, function(data) {
         val = data[property] || false;
         updaterFunction(type,false,val)
     });
 }
 
-function blankTitle(property,updaterFunction,type) {
-    if (!document.title.length) {
+function blankTitle(property, updaterFunction, type, url) {
+    if (window.location.href.indexOf(url) == -1) {
         return;
     }
     chrome.storage.sync.get(property, function(data) {
@@ -347,6 +327,30 @@ function toggleStyles(styleId, obfuscate, toggleBoolVar, url) {
         obfuscate.forEach((r, i) => style.sheet.insertRule(r, i));
       } 
 }
+
+
+var targetNode = $("title")[0]
+
+// Options for the observer (which mutations to observe)
+var config = { attributes: true, childList: true };
+
+// Callback function to execute when mutations are observed
+var callback = function(mutationsList) {
+    for(var mutation of mutationsList) {
+        if (mutation.type == 'childList' && document.title.length) {
+            blankTitle(TOGGLE_REPLIT_NAMES,replitUpdater,'names', URLS['replit']);
+            blankTitle(TOGGLE_ANGELLIST_NAMES,angellistUpdater,'names',URLS['anglelList']);
+            blankTitle(TOGGLE_TWITTER_NAMES,twitterUpdater,'names',URLS['twitter']);
+            blankTitle(TOGGLE_LINKED_IN_NAMES,linkedinUpdater,'names', URLS['linkedIn']);
+        }
+    }
+};
+
+// Create an observer instance linked to the callback function
+var observer = new MutationObserver(callback);
+
+// Start observing the target node for configured mutations
+observer.observe(targetNode, config);
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
