@@ -1,4 +1,3 @@
-
 const TOGGLE_LINKED_IN_PHOTOS = 'togglePhotos'
 const TOGGLE_LINKED_IN_NAMES = 'toggleNames'
 const TOGGLE_ANGELLIST_PHOTOS = 'toggleAlPhotos'
@@ -7,6 +6,30 @@ const TOGGLE_TWITTER_PHOTOS = 'toggleTwitterPhotos'
 const TOGGLE_TWITTER_NAMES = 'toggleTwitterNames'
 const TOGGLE_REPLIT_PHOTOS = 'toggleReplitPhotos'
 const TOGGLE_REPLIT_NAMES = 'toggleReplitNames'
+
+var targetNode = $("title")[0]
+
+// Options for the observer (which mutations to observe)
+var config = { attributes: true, childList: true };
+
+// Callback function to execute when mutations are observed
+var callback = function(mutationsList) {
+    for(var mutation of mutationsList) {
+        if (mutation.type == 'childList' && document.title.length) {
+        blankTitle(TOGGLE_LINKED_IN_NAMES,linkedinUpdater,'names');
+        blankTitle(TOGGLE_REPLIT_NAMES,replitUpdater,'names');
+        blankTitle(TOGGLE_ANGELLIST_NAMES,angellistUpdater,'names');
+        blankTitle(TOGGLE_TWITTER_NAMES,twitterUpdater,'names');
+        }
+    }
+};
+
+// Create an observer instance linked to the callback function
+var observer = new MutationObserver(callback);
+
+// Start observing the target node for configured mutations
+observer.observe(targetNode, config);
+
 
 const URLS = {
     'linkedIn': 'linkedin.com',
@@ -242,6 +265,9 @@ function createModel(styleIdentifier, photoIdentifier, nameIdentifier) {
             const id = toggle[type][2];
             const styles = toggle[type][3];
             const nextVal = toggle[type][0];
+            if (nextVal && type == 'names') {
+                document.title = "";
+            }
             toggleStyles(id, styles, nextVal, url)
             if (isSet) {
                 chrome.storage.sync.set({ [toggle[type][1]]: nextVal })
@@ -290,6 +316,18 @@ function getIntitialVal(property,updaterFunction,type) {
     chrome.storage.sync.get(property, function(data) {
         val = data[property] || false;
         updaterFunction(type,false,val)
+    });
+}
+
+function blankTitle(property,updaterFunction,type) {
+    if (!document.title.length) {
+        return;
+    }
+    chrome.storage.sync.get(property, function(data) {
+        val = data[property] || false;
+        if (val && document.title.length) {
+            document.title = "";
+        }
     });
 }
 
