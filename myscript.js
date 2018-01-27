@@ -299,7 +299,7 @@ function getIntitialVal(property, updaterFunction, type) {
     });
 }
 
-function blankTitle(property, updaterFunction, type, url) {
+function blankTitle(property, url) {
     if (window.location.href.indexOf(url) == -1) {
         return;
     }
@@ -335,19 +335,19 @@ var targetNode = $("title")[0]
 var config = { attributes: true, childList: true };
 
 // Callback function to execute when mutations are observed
-var callback = function(mutationsList) {
+const mutationCallback = function(mutationsList) {
     for(var mutation of mutationsList) {
         if (mutation.type == 'childList' && document.title.length) {
-            blankTitle(TOGGLE_REPLIT_NAMES,replitUpdater,'names', URLS['replit']);
-            blankTitle(TOGGLE_ANGELLIST_NAMES,angellistUpdater,'names',URLS['anglelList']);
-            blankTitle(TOGGLE_TWITTER_NAMES,twitterUpdater,'names',URLS['twitter']);
-            blankTitle(TOGGLE_LINKED_IN_NAMES,linkedinUpdater,'names', URLS['linkedIn']);
+            blankTitle(TOGGLE_REPLIT_NAMES, URLS['replit']);
+            blankTitle(TOGGLE_ANGELLIST_NAMES, URLS['anglelList']);
+            blankTitle(TOGGLE_TWITTER_NAMES, URLS['twitter']);
+            blankTitle(TOGGLE_LINKED_IN_NAMES, URLS['linkedIn']);
         }
     }
 };
 
 // Create an observer instance linked to the callback function
-var observer = new MutationObserver(callback);
+var observer = new MutationObserver(mutationCallback);
 
 // Start observing the target node for configured mutations
 observer.observe(targetNode, config);
