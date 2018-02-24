@@ -8,6 +8,14 @@ const TOGGLE_REPLIT_PHOTOS = 'toggleReplitPhotos'
 const TOGGLE_REPLIT_NAMES = 'toggleReplitNames'
 const TOGGLE_GREENHOUSE_PHOTOS = 'toggleGreenhousePhotos'
 const TOGGLE_GREENHOUSE_NAMES = 'toggleGreenhouseNames'
+const TOGGLE_BUZZFEED_PHOTOS = 'toggleBuzzfeedPhotos'
+const TOGGLE_BUZZFEED_NAMES = 'toggleBuzzfeedNames'
+const TOGGLE_MEETUP_PHOTOS = 'toggleMeetupPhotos'
+const TOGGLE_MEETUP_NAMES = 'toggleMeetupNames'
+
+const TOGGLE_YOUTUBE_PHOTOS = 'toggleYoutubePhotos'
+const TOGGLE_YOUTUBE_NAMES = 'toggleYoutubeNames'
+ 
 
 const URLS = {
   linkedIn: 'linkedin.com',
@@ -15,6 +23,9 @@ const URLS = {
   angelList: 'angel.co',
   replit: 'repl.it',
   greenhouse: 'greenhouse.io',
+  buzzfeed: 'buzzfeed.com', 
+  meetup: 'meetup.com',
+  youtube: 'youtube.com'
 }
 
 const STYLES = {
@@ -195,7 +206,7 @@ const STYLE_SHEETS = {
     ],
     nameId: 'BIAS_REPLIT_NAMES',
     photoId: 'BIAS_REPLIT_PHOTOS',
-  },
+  }, 
   greenhouse: {
     names: [
       `.person-name:before, .person-info-column .name:before ${STYLES.candidateName}`,
@@ -205,6 +216,29 @@ const STYLE_SHEETS = {
     nameId: 'BIAS_GREENHOUSE_NAMES',
     photoId: 'BIAS_GREENHOUSE_PHOTOS',
   },
+  buzzfeed: {
+    names: [  `.bold ${STYLES.hidden}`, ], 
+    photos: [ `.card__image, 
+                  .wire-frame__img,
+                  .site-component-carousel__item__image, 
+                  .video-player,
+                  .item__image ${STYLES.blur}`, 
+            ], 
+    nameId: 'BIAS_BUZZFEED_NAMES', 
+    photoId: 'BIAS_BUZZFEED_PHOTOS',
+  }, 
+  meetup: {
+    names: [ `.groupMember-name ${STYLES.hidden}` ], 
+    photos: [ `.avatar, .text--bold ${STYLES.blur}` ], 
+    nameId: 'BIAS_MEETUP_NAMES', 
+    photoId: 'BIAS_MEETUP_PHOTOS', 
+  }, 
+  youtube: {
+    names: [  `.bold ${STYLES.hidden}`, ], 
+    photos: [ `.ytd-thumbnail ${STYLES.hidden}`, ], 
+    nameId: 'BIAS_YOUTUBE_NAMES', 
+    photoId: 'BIAS_YOUTUBE_PHOTOS',
+  }
 }
 
 var linkedinUpdater = createModel(
@@ -232,6 +266,21 @@ var greenhouseUpdater = createModel(
   TOGGLE_GREENHOUSE_PHOTOS,
   TOGGLE_GREENHOUSE_NAMES
 )()
+var buzzfeedUpdater = createModel(
+  'buzzfeed',
+  TOGGLE_BUZZFEED_PHOTOS,
+  TOGGLE_BUZZFEED_NAMES
+)()
+var meetupUpdater = createModel(
+  'meetup',
+  TOGGLE_MEETUP_PHOTOS,
+  TOGGLE_MEETUP_NAMES
+)()
+var youtubeUpdater = createModel(
+  'youtube',
+  TOGGLE_YOUTUBE_PHOTOS,
+  TOGGLE_YOUTUBE_NAMES
+)()
 
 changeAll = (isSet = false, val = true) => {
   linkedinUpdater('photos', isSet, val)
@@ -244,6 +293,12 @@ changeAll = (isSet = false, val = true) => {
   replitUpdater('names', isSet, val)
   greenhouseUpdater('photos', isSet, val)
   greenhouseUpdater('names', isSet, val)
+  buzzfeedUpdater('photos', isSet, val)
+  buzzfeedUpdater('names', isSet, val)
+  meetupUpdater('photos', isSet, val)
+  meetupUpdater('names', isSet, val)
+  youtubeUpdater('photos', isSet, val)
+  youtubeUpdater('names', isSet, val)
 }
 
 var toggleAll = (function() {
@@ -303,6 +358,12 @@ getIntitialVal(TOGGLE_REPLIT_PHOTOS, replitUpdater, 'photos')
 getIntitialVal(TOGGLE_REPLIT_NAMES, replitUpdater, 'names')
 getIntitialVal(TOGGLE_GREENHOUSE_PHOTOS, greenhouseUpdater, 'photos')
 getIntitialVal(TOGGLE_GREENHOUSE_NAMES, greenhouseUpdater, 'names')
+getIntitialVal(TOGGLE_BUZZFEED_PHOTOS, buzzfeedUpdater, 'photos')
+getIntitialVal(TOGGLE_BUZZFEED_NAMES, buzzfeedUpdater, 'names')
+getIntitialVal(TOGGLE_MEETUP_PHOTOS, meetupUpdater, 'photos')
+getIntitialVal(TOGGLE_MEETUP_NAMES, meetupUpdater, 'names')
+getIntitialVal(TOGGLE_YOUTUBE_PHOTOS, youtubeUpdater, 'photos')
+getIntitialVal(TOGGLE_YOUTUBE_NAMES, youtubeUpdater, 'names')
 
 $(document).keydown(function(e) {
   var ctrlKey = e.ctrlKey || e.metaKey
@@ -380,5 +441,22 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     case request.toggleGreenhousePhotos:
       greenhouseUpdater('photos', true)
       break
+    case request.toggleBuzzfeedPhotos: 
+      buzzfeedUpdater('photos', true)
+      break 
+    case request.toggleBuzzfeedNames: 
+      buzzfeedUpdater('names', true)
+      break 
+    case request.toggleMeetupPhotos: 
+      meetupUpdater('photos', true)
+      break 
+    case request.toggleMeetupNames: 
+      meetupUpdater('names', true)
+    case request.toggleYoutubePhotos: 
+      youtubeUpdater('photos', true)
+      break 
+    case request.toggleYoutubeNames: 
+      youtubeUpdater('names', true)
+      break 
   }
 })
