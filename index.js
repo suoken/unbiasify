@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var $clearReplitNames = $('#clear-replit-names')
   var $clearGreenhousePhotos = $('#clear-greenhouse-photos')
   var $clearGreenhouseNames = $('#clear-greenhouse-names')
+  var $clearYouTubeThumbnails = $('#clear-youtube-thumbnails')
 
   const TOGGLE_LINKED_IN_PHOTOS = 'togglePhotos'
   const TOGGLE_LINKED_IN_NAMES = 'toggleNames'
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const TOGGLE_REPLIT_NAMES = 'toggleReplitNames'
   const TOGGLE_GREENHOUSE_PHOTOS = 'toggleGreenhousePhotos'
   const TOGGLE_GREENHOUSE_NAMES = 'toggleGreenhouseNames'
+  const TOGGLE_YOUTUBE_THUMBNAILS = 'toggleYouTubeThumbnails'
 
   setInitialValues(TOGGLE_LINKED_IN_PHOTOS, $clearLinkedInPhotos)
   setInitialValues(TOGGLE_LINKED_IN_NAMES, $clearLinkedInNames)
@@ -31,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
   setInitialValues(TOGGLE_REPLIT_NAMES, $clearReplitNames)
   setInitialValues(TOGGLE_GREENHOUSE_PHOTOS, $clearGreenhousePhotos)
   setInitialValues(TOGGLE_GREENHOUSE_NAMES, $clearGreenhouseNames)
+  setInitialValues(TOGGLE_YOUTUBE_THUMBNAILS, $clearYouTubeThumbnails)
 
   $clearLinkedInPhotos.off().on('change', function() {
     sendMessage({ togglePhotos: true })
@@ -69,6 +72,10 @@ document.addEventListener('DOMContentLoaded', function() {
   })
 
   $clearGreenhouseNames.off().on('change', function() {
+    sendMessage({ toggleGreenhouseNames: true })
+  })
+
+  $clearYouTubeThumbnails.off().on('change', function() {
     sendMessage({ toggleGreenhouseNames: true })
   })
 
