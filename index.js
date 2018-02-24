@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
   var $clearReplitNames = $('#clear-replit-names')
   var $clearGreenhousePhotos = $('#clear-greenhouse-photos')
   var $clearGreenhouseNames = $('#clear-greenhouse-names')
-  var $clearYouTubeThumbnails = $('#clear-youtube-thumbnails')
+  var $clearBuzzfeedPhotos = $('#clear-buzzfeed-photos')
+  var $clearBuzzfeedNames = $('#clear-buzzfeed-names')
 
   const TOGGLE_LINKED_IN_PHOTOS = 'togglePhotos'
   const TOGGLE_LINKED_IN_NAMES = 'toggleNames'
@@ -21,7 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const TOGGLE_REPLIT_NAMES = 'toggleReplitNames'
   const TOGGLE_GREENHOUSE_PHOTOS = 'toggleGreenhousePhotos'
   const TOGGLE_GREENHOUSE_NAMES = 'toggleGreenhouseNames'
-  const TOGGLE_YOUTUBE_THUMBNAILS = 'toggleYouTubeThumbnails'
+  const TOGGLE_BUZZFEED_PHOTOS = 'toggleBuzzfeedPhotos'
+  const TOGGLE_BUZZFEED_NAMES = 'toggleBuzzfeedNames'
 
   setInitialValues(TOGGLE_LINKED_IN_PHOTOS, $clearLinkedInPhotos)
   setInitialValues(TOGGLE_LINKED_IN_NAMES, $clearLinkedInNames)
@@ -33,7 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
   setInitialValues(TOGGLE_REPLIT_NAMES, $clearReplitNames)
   setInitialValues(TOGGLE_GREENHOUSE_PHOTOS, $clearGreenhousePhotos)
   setInitialValues(TOGGLE_GREENHOUSE_NAMES, $clearGreenhouseNames)
-  setInitialValues(TOGGLE_YOUTUBE_THUMBNAILS, $clearYouTubeThumbnails)
+  setInitialValues(TOGGLE_BUZZFEED_PHOTOS, $clearBuzzfeedPhotos)
+  setInitialValues(TOGGLE_BUZZFEED_NAMES, $clearBuzzfeedNames)
 
   $clearLinkedInPhotos.off().on('change', function() {
     sendMessage({ togglePhotos: true })
@@ -75,8 +78,12 @@ document.addEventListener('DOMContentLoaded', function() {
     sendMessage({ toggleGreenhouseNames: true })
   })
 
-  $clearYouTubeThumbnails.off().on('change', function() {
-    sendMessage({ toggleYouTubeThumbnails: true })
+  $clearBuzzfeedPhotos.off().on('change', function() {
+    sendMessage({ toggleBuzzfeedPhotos: true })
+  })
+
+  $clearBuzzfeedNames.off().on('change', function() {
+    sendMessage({ toggleBuzzfeedNames: true })
   })
 
   function sendMessage(message) {

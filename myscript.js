@@ -8,7 +8,8 @@ const TOGGLE_REPLIT_PHOTOS = 'toggleReplitPhotos'
 const TOGGLE_REPLIT_NAMES = 'toggleReplitNames'
 const TOGGLE_GREENHOUSE_PHOTOS = 'toggleGreenhousePhotos'
 const TOGGLE_GREENHOUSE_NAMES = 'toggleGreenhouseNames'
-const TOGGLE_YOUTUBE_THUMBNAILS = 'toggleYouTubeThumbnails'
+const TOGGLE_BUZZFEED_PHOTOS = 'toggleBuzzfeedPhotos'
+const TOGGLE_BUZZFEED_NAMES = 'toggleBuzzfeedNames'
 
 const URLS = {
   linkedIn: 'linkedin.com',
@@ -16,11 +17,11 @@ const URLS = {
   angelList: 'angel.co',
   replit: 'repl.it',
   greenhouse: 'greenhouse.io',
-  youtube: 'youtube.com',
+  buzzfeed: 'buzzfeed.com'
 }
 
 const STYLES = {
-  hidden: '{ visibility: visible !important; }',
+  hidden: '{ visibility: hidden !important; }',
   hiddenRelative: '{ visibility: hidden !important; position: relative; }',
   linkText: '{ content: "Link to Profile"; visibility: visible; }',
   candidateName: '{ content: "Candidate Name"; visibility: visible; }',
@@ -197,7 +198,7 @@ const STYLE_SHEETS = {
     ],
     nameId: 'BIAS_REPLIT_NAMES',
     photoId: 'BIAS_REPLIT_PHOTOS',
-  },
+  }, 
   greenhouse: {
     names: [
       `.person-name:before, .person-info-column .name:before ${STYLES.candidateName}`,
@@ -207,13 +208,12 @@ const STYLE_SHEETS = {
     nameId: 'BIAS_GREENHOUSE_NAMES',
     photoId: 'BIAS_GREENHOUSE_PHOTOS',
   },
-  youtube: {
-    photos: [
-      `img.style-scope.yt-img-shadow img ${STYLES.hidden}`,
-      `a.yt-simple-endpoint.inline-block.style-scope.ytd-thumbnail[style*="visibility: hidden"]`,
-    ],
-    photoId: 'BIAS_YOUTUBE_THUMBNAILS',
-  },
+  buzzfeed: {
+    names: [  `.bold ${STYLES.hidden}`, ], 
+    photos: [ `.card__image ${STYLES.hidden}`, ], 
+    nameId: 'BIAS_BUZZFEED_NAMES', 
+    photoId: 'BIAS_BUZZFEED_PHOTOS',
+  }
 }
 
 var linkedinUpdater = createModel(
@@ -241,10 +241,10 @@ var greenhouseUpdater = createModel(
   TOGGLE_GREENHOUSE_PHOTOS,
   TOGGLE_GREENHOUSE_NAMES
 )()
-var youtubeUpdater = createModel(
-  'youtube',
-  TOGGLE_YOUTUBE_THUMBNAILS,
-  null
+var buzzfeedUpdater = createModel(
+  'buzzfeed',
+  TOGGLE_BUZZFEED_PHOTOS,
+  TOGGLE_BUZZFEED_NAMES
 )()
 
 changeAll = (isSet = false, val = true) => {
@@ -258,7 +258,8 @@ changeAll = (isSet = false, val = true) => {
   replitUpdater('names', isSet, val)
   greenhouseUpdater('photos', isSet, val)
   greenhouseUpdater('names', isSet, val)
-  youtubeUpdater('photos', isSet, val)
+  buzzfeedUpdater('photos', isSet, val)
+  buzzfeedUpdater('names', isSet, val)
 }
 
 var toggleAll = (function() {
@@ -318,7 +319,8 @@ getIntitialVal(TOGGLE_REPLIT_PHOTOS, replitUpdater, 'photos')
 getIntitialVal(TOGGLE_REPLIT_NAMES, replitUpdater, 'names')
 getIntitialVal(TOGGLE_GREENHOUSE_PHOTOS, greenhouseUpdater, 'photos')
 getIntitialVal(TOGGLE_GREENHOUSE_NAMES, greenhouseUpdater, 'names')
-getIntitialVal(TOGGLE_YOUTUBE_THUMBNAILS, youtubeUpdater, 'photos')
+getIntitialVal(TOGGLE_BUZZFEED_PHOTOS, buzzfeedUpdater, 'photos')
+getIntitialVal(TOGGLE_BUZZFEED_NAMES, buzzfeedUpdater, 'names')
 
 $(document).keydown(function(e) {
   var ctrlKey = e.ctrlKey || e.metaKey
@@ -396,8 +398,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     case request.toggleGreenhousePhotos:
       greenhouseUpdater('photos', true)
       break
-    case request.toggleYouTubeThumbnails:
-      youtubeUpdater('photos', true)
-      break
+    case request.toggleBuzzfeedPhotos: 
+      buzzfeedUpdater('photos', true)
+      break 
+    case request.toggleBuzzfeedNames: 
+      buzzfeedUpdater('names', true)
+      break 
   }
 })
