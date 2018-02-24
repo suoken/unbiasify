@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
   var $clearBuzzfeedNames = $('#clear-buzzfeed-names')
   var $clearMeetupPhotos = $('#clear-meetup-photos')
   var $clearMeetupNames = $('#clear-meetup-names')
+  var $clearYoutubePhotos = $('#clear-youtube-photos')
+  var $clearYoutubeNames = $('#clear-youtube-names')
 
   const TOGGLE_LINKED_IN_PHOTOS = 'togglePhotos'
   const TOGGLE_LINKED_IN_NAMES = 'toggleNames'
@@ -28,6 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const TOGGLE_BUZZFEED_NAMES = 'toggleBuzzfeedNames'
   const TOGGLE_MEETUP_PHOTOS = 'toggleMeetupPhotos'
   const TOGGLE_MEETUP_NAMES = 'toggleMeetupNames'
+  const TOGGLE_YOUTUBE_PHOTOS = 'toggleYoutubePhotos'
+  const TOGGLE_YOUTUBE_NAMES = 'toggleYoutubeNames'
 
   setInitialValues(TOGGLE_LINKED_IN_PHOTOS, $clearLinkedInPhotos)
   setInitialValues(TOGGLE_LINKED_IN_NAMES, $clearLinkedInNames)
@@ -43,6 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
   setInitialValues(TOGGLE_BUZZFEED_NAMES, $clearBuzzfeedNames)
   setInitialValues(TOGGLE_MEETUP_PHOTOS, $clearMeetupPhotos)
   setInitialValues(TOGGLE_MEETUP_NAMES, $clearMeetupNames)
+  setInitialValues(TOGGLE_YOUTUBE_PHOTOS, $clearYoutubePhotos)
+  setInitialValues(TOGGLE_YOUTUBE_NAMES, $clearYoutubeNames)
 
   $clearLinkedInPhotos.off().on('change', function() {
     sendMessage({ togglePhotos: true })
@@ -98,6 +104,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   $clearMeetupNames.off().on('change', function() {
     sendMessage({ toggleMeetupNames: true })
+  })
+
+  $clearYoutubePhotos.off().on('change', function() {
+    sendMessage({ toggleYoutubePhotos: true })
+  })
+
+  $clearYoutubeNames.off().on('change', function() {
+    sendMessage({ toggleYoutubeNames: true })
   })
 
   function sendMessage(message) {
