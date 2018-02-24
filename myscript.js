@@ -10,6 +10,8 @@ const TOGGLE_GREENHOUSE_PHOTOS = 'toggleGreenhousePhotos'
 const TOGGLE_GREENHOUSE_NAMES = 'toggleGreenhouseNames'
 const TOGGLE_BUZZFEED_PHOTOS = 'toggleBuzzfeedPhotos'
 const TOGGLE_BUZZFEED_NAMES = 'toggleBuzzfeedNames'
+const TOGGLE_MEETUP_PHOTOS = 'toggleMeetupPhotos'
+const TOGGLE_MEETUP_NAMES = 'toggleMeetupNames'
 
 const URLS = {
   linkedIn: 'linkedin.com',
@@ -17,7 +19,8 @@ const URLS = {
   angelList: 'angel.co',
   replit: 'repl.it',
   greenhouse: 'greenhouse.io',
-  buzzfeed: 'buzzfeed.com'
+  buzzfeed: 'buzzfeed.com', 
+  meetup: 'meetup.com'
 }
 
 const STYLES = {
@@ -210,10 +213,21 @@ const STYLE_SHEETS = {
   },
   buzzfeed: {
     names: [  `.bold ${STYLES.hidden}`, ], 
-    photos: [ `.card__image ${STYLES.hidden}`, ], 
+    photos: [ `.card__image, 
+                  .wire-frame__img,
+                  .site-component-carousel__item__image, 
+                  .video-player,
+                  .item__image ${STYLES.blur}`, 
+            ], 
     nameId: 'BIAS_BUZZFEED_NAMES', 
     photoId: 'BIAS_BUZZFEED_PHOTOS',
-  }
+  }, 
+  meetup: {
+    names: [ `.groupMember-name ${STYLES.hidden}` ], 
+    photos: [ `.avatar, .text--bold ${STYLES.blur}` ], 
+    nameId: 'BIAS_MEETUP_NAMES', 
+    photoId: 'BIAS_MEETUP_PHOTOS', 
+  }, 
 }
 
 var linkedinUpdater = createModel(
@@ -246,6 +260,11 @@ var buzzfeedUpdater = createModel(
   TOGGLE_BUZZFEED_PHOTOS,
   TOGGLE_BUZZFEED_NAMES
 )()
+var meetupUpdater = createModel(
+  'meetup',
+  TOGGLE_MEETUP_PHOTOS,
+  TOGGLE_MEETUP_NAMES
+)()
 
 changeAll = (isSet = false, val = true) => {
   linkedinUpdater('photos', isSet, val)
@@ -260,6 +279,8 @@ changeAll = (isSet = false, val = true) => {
   greenhouseUpdater('names', isSet, val)
   buzzfeedUpdater('photos', isSet, val)
   buzzfeedUpdater('names', isSet, val)
+  meetupUpdater('photos', isSet, val)
+  meetupUpdater('names', isSet, val)
 }
 
 var toggleAll = (function() {
@@ -321,6 +342,8 @@ getIntitialVal(TOGGLE_GREENHOUSE_PHOTOS, greenhouseUpdater, 'photos')
 getIntitialVal(TOGGLE_GREENHOUSE_NAMES, greenhouseUpdater, 'names')
 getIntitialVal(TOGGLE_BUZZFEED_PHOTOS, buzzfeedUpdater, 'photos')
 getIntitialVal(TOGGLE_BUZZFEED_NAMES, buzzfeedUpdater, 'names')
+getIntitialVal(TOGGLE_MEETUP_PHOTOS, meetupUpdater, 'photos')
+getIntitialVal(TOGGLE_MEETUP_NAMES, meetupUpdater, 'names')
 
 $(document).keydown(function(e) {
   var ctrlKey = e.ctrlKey || e.metaKey
@@ -403,6 +426,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       break 
     case request.toggleBuzzfeedNames: 
       buzzfeedUpdater('names', true)
+      break 
+      case request.toggleMeetupPhotos: 
+      meetupUpdater('photos', true)
+      break 
+    case request.toggleMeetupNames: 
+      meetupUpdater('names', true)
       break 
   }
 })

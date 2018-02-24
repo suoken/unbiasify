@@ -28,7 +28,9 @@
         "https://repl.it/*",
         "https://app.greenhouse.io/*", 
         "*://*.youtube.com/*", 
-        "*://*.buzzfeed.com/*"
+        "*://*.buzzfeed.com/*",
+        "*://*.github.com/*", 
+        "*://*.meetup.com/*"
       ],
       "js": ["jquery.min.js", "myscript.js"]
     }

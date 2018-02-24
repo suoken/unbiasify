@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
   var $clearGreenhouseNames = $('#clear-greenhouse-names')
   var $clearBuzzfeedPhotos = $('#clear-buzzfeed-photos')
   var $clearBuzzfeedNames = $('#clear-buzzfeed-names')
+  var $clearMeetupPhotos = $('#clear-meetup-photos')
+  var $clearMeetupNames = $('#clear-meetup-names')
 
   const TOGGLE_LINKED_IN_PHOTOS = 'togglePhotos'
   const TOGGLE_LINKED_IN_NAMES = 'toggleNames'
@@ -24,6 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const TOGGLE_GREENHOUSE_NAMES = 'toggleGreenhouseNames'
   const TOGGLE_BUZZFEED_PHOTOS = 'toggleBuzzfeedPhotos'
   const TOGGLE_BUZZFEED_NAMES = 'toggleBuzzfeedNames'
+  const TOGGLE_MEETUP_PHOTOS = 'toggleMeetupPhotos'
+  const TOGGLE_MEETUP_NAMES = 'toggleMeetupNames'
 
   setInitialValues(TOGGLE_LINKED_IN_PHOTOS, $clearLinkedInPhotos)
   setInitialValues(TOGGLE_LINKED_IN_NAMES, $clearLinkedInNames)
@@ -37,6 +41,8 @@ document.addEventListener('DOMContentLoaded', function() {
   setInitialValues(TOGGLE_GREENHOUSE_NAMES, $clearGreenhouseNames)
   setInitialValues(TOGGLE_BUZZFEED_PHOTOS, $clearBuzzfeedPhotos)
   setInitialValues(TOGGLE_BUZZFEED_NAMES, $clearBuzzfeedNames)
+  setInitialValues(TOGGLE_MEETUP_PHOTOS, $clearMeetupPhotos)
+  setInitialValues(TOGGLE_MEETUP_NAMES, $clearMeetupNames)
 
   $clearLinkedInPhotos.off().on('change', function() {
     sendMessage({ togglePhotos: true })
@@ -84,6 +90,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   $clearBuzzfeedNames.off().on('change', function() {
     sendMessage({ toggleBuzzfeedNames: true })
+  })
+
+  $clearMeetupPhotos.off().on('change', function() {
+    sendMessage({ toggleMeetupPhotos: true })
+  })
+
+  $clearMeetupNames.off().on('change', function() {
+    sendMessage({ toggleMeetupNames: true })
   })
 
   function sendMessage(message) {
