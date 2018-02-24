@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
   })
 
   $clearYouTubeThumbnails.off().on('change', function() {
-    sendMessage({ toggleGreenhouseNames: true })
+    sendMessage({ toggleYouTubeThumbnails: true })
   })
 
   function sendMessage(message) {

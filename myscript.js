@@ -20,7 +20,7 @@ const URLS = {
 }
 
 const STYLES = {
-  hidden: '{ visibility: hidden !important; }',
+  hidden: '{ visibility: visible !important; }',
   hiddenRelative: '{ visibility: hidden !important; position: relative; }',
   linkText: '{ content: "Link to Profile"; visibility: visible; }',
   candidateName: '{ content: "Candidate Name"; visibility: visible; }',
@@ -208,10 +208,11 @@ const STYLE_SHEETS = {
     photoId: 'BIAS_GREENHOUSE_PHOTOS',
   },
   youtube: {
-    thumbnails: [
-      `ytd-thumbnail.ytd-grid-video-renderer ${STYLES.blur}`,
+    photos: [
+      `img.style-scope.yt-img-shadow img ${STYLES.hidden}`,
+      `a.yt-simple-endpoint.inline-block.style-scope.ytd-thumbnail[style*="visibility: hidden"]`,
     ],
-    thumbnailId: 'BIAS_YOUTUBE_THUMBNAILS',
+    photoId: 'BIAS_YOUTUBE_THUMBNAILS',
   },
 }
 
@@ -242,7 +243,8 @@ var greenhouseUpdater = createModel(
 )()
 var youtubeUpdater = createModel(
   'youtube',
-  TOGGLE_YOUTUBE_THUMBNAILS
+  TOGGLE_YOUTUBE_THUMBNAILS,
+  null
 )()
 
 changeAll = (isSet = false, val = true) => {
@@ -256,7 +258,7 @@ changeAll = (isSet = false, val = true) => {
   replitUpdater('names', isSet, val)
   greenhouseUpdater('photos', isSet, val)
   greenhouseUpdater('names', isSet, val)
-  youtubeUpdater('thumbnails', isSet, val)
+  youtubeUpdater('photos', isSet, val)
 }
 
 var toggleAll = (function() {
@@ -267,7 +269,7 @@ var toggleAll = (function() {
   }
 })()
 
-function createModel(styleIdentifier, photoIdentifier, nameIdentifier, thumbnailIdentifier) {
+function createModel(styleIdentifier, photoIdentifier, nameIdentifier) {
   return function() {
     let toggle = {}
     let url = URLS[styleIdentifier]
@@ -282,11 +284,6 @@ function createModel(styleIdentifier, photoIdentifier, nameIdentifier, thumbnail
       nameIdentifier,
       STYLE_SHEETS[styleIdentifier].nameId,
       STYLE_SHEETS[styleIdentifier].names,
-    ]
-    toggle['thumbnails'] = [
-      false,
-      thumbnailIdentifier,
-      STYLE_SHEETS[styleIdentifier].thumbnailId,
     ]
 
     return function(type, isSet = false, val) {
@@ -321,7 +318,7 @@ getIntitialVal(TOGGLE_REPLIT_PHOTOS, replitUpdater, 'photos')
 getIntitialVal(TOGGLE_REPLIT_NAMES, replitUpdater, 'names')
 getIntitialVal(TOGGLE_GREENHOUSE_PHOTOS, greenhouseUpdater, 'photos')
 getIntitialVal(TOGGLE_GREENHOUSE_NAMES, greenhouseUpdater, 'names')
-getIntitialVal(TOGGLE_YOUTUBE_THUMBNAILS, youtubeUpdater, 'thumbnails')
+getIntitialVal(TOGGLE_YOUTUBE_THUMBNAILS, youtubeUpdater, 'photos')
 
 $(document).keydown(function(e) {
   var ctrlKey = e.ctrlKey || e.metaKey
@@ -400,7 +397,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       greenhouseUpdater('photos', true)
       break
     case request.toggleYouTubeThumbnails:
-      youtubeUpdater('thumbnails', true)
+      youtubeUpdater('photos', true)
       break
   }
 })
