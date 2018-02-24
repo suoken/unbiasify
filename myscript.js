@@ -10,6 +10,8 @@ const TOGGLE_GREENHOUSE_PHOTOS = 'toggleGreenhousePhotos'
 const TOGGLE_GREENHOUSE_NAMES = 'toggleGreenhouseNames'
 const TOGGLE_BUZZFEED_PHOTOS = 'toggleBuzzfeedPhotos'
 const TOGGLE_BUZZFEED_NAMES = 'toggleBuzzfeedNames'
+const TOGGLE_YOUTUBE_PHOTOS = 'toggleYoutubePhotos'
+const TOGGLE_YOUTUBE_NAMES = 'toggleYoutubeNames'
 
 const URLS = {
   linkedIn: 'linkedin.com',
@@ -17,7 +19,8 @@ const URLS = {
   angelList: 'angel.co',
   replit: 'repl.it',
   greenhouse: 'greenhouse.io',
-  buzzfeed: 'buzzfeed.com'
+  buzzfeed: 'buzzfeed.com',
+  youtube: 'youtube.com'
 }
 
 const STYLES = {
@@ -213,6 +216,12 @@ const STYLE_SHEETS = {
     photos: [ `.card__image ${STYLES.hidden}`, ], 
     nameId: 'BIAS_BUZZFEED_NAMES', 
     photoId: 'BIAS_BUZZFEED_PHOTOS',
+  },
+  youtube: {
+    names: [  `.bold ${STYLES.hidden}`, ], 
+    photos: [ `.ytd-thumbnail ${STYLES.hidden}`, ], 
+    nameId: 'BIAS_YOUTUBE_NAMES', 
+    photoId: 'BIAS_YOUTUBE_PHOTOS',
   }
 }
 
@@ -246,6 +255,11 @@ var buzzfeedUpdater = createModel(
   TOGGLE_BUZZFEED_PHOTOS,
   TOGGLE_BUZZFEED_NAMES
 )()
+var youtubeUpdater = createModel(
+  'youtube',
+  TOGGLE_YOUTUBE_PHOTOS,
+  TOGGLE_YOUTUBE_NAMES
+)()
 
 changeAll = (isSet = false, val = true) => {
   linkedinUpdater('photos', isSet, val)
@@ -260,6 +274,8 @@ changeAll = (isSet = false, val = true) => {
   greenhouseUpdater('names', isSet, val)
   buzzfeedUpdater('photos', isSet, val)
   buzzfeedUpdater('names', isSet, val)
+  youtubeUpdater('photos', isSet, val)
+  youtubeUpdater('names', isSet, val)
 }
 
 var toggleAll = (function() {
@@ -321,6 +337,8 @@ getIntitialVal(TOGGLE_GREENHOUSE_PHOTOS, greenhouseUpdater, 'photos')
 getIntitialVal(TOGGLE_GREENHOUSE_NAMES, greenhouseUpdater, 'names')
 getIntitialVal(TOGGLE_BUZZFEED_PHOTOS, buzzfeedUpdater, 'photos')
 getIntitialVal(TOGGLE_BUZZFEED_NAMES, buzzfeedUpdater, 'names')
+getIntitialVal(TOGGLE_YOUTUBE_PHOTOS, youtubeUpdater, 'photos')
+getIntitialVal(TOGGLE_YOUTUBE_NAMES, youtubeUpdater, 'names')
 
 $(document).keydown(function(e) {
   var ctrlKey = e.ctrlKey || e.metaKey
@@ -403,6 +421,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       break 
     case request.toggleBuzzfeedNames: 
       buzzfeedUpdater('names', true)
+      break 
+    case request.toggleYoutubePhotos: 
+      youtubeUpdater('photos', true)
+      break 
+    case request.toggleYoutubeNames: 
+      youtubeUpdater('names', true)
       break 
   }
 })
